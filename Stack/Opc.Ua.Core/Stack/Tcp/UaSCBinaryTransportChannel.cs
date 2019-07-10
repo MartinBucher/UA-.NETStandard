@@ -172,32 +172,27 @@ namespace Opc.Ua.Bindings
                 UaSCUaBinaryClientChannel channel = m_channel;
                 m_channel = null;
 
-                try
-                {
-                    // reconnect.
-                    OpenOnDemand();
+                // reconnect.
+                OpenOnDemand();
 
-                    // begin connect operation.
-                    IAsyncResult result = m_channel.BeginConnect(m_url, m_operationTimeout, null, null);
-                    m_channel.EndConnect(result);
-                }
-                finally
+                // begin connect operation.
+                IAsyncResult result = m_channel.BeginConnect(m_url, m_operationTimeout, null, null);
+                m_channel.EndConnect(result);
+
+                // close existing channel.
+                if (channel != null)
                 {
-                    // close existing channel.
-                    if (channel != null)
+                    try
                     {
-                        try
-                        {
-                            channel.Close(1000);
-                        }
-                        catch (Exception)
-                        {
-                            // do nothing.
-                        }
-                        finally
-                        {
-                            channel.Dispose();
-                        }
+                        channel.Close(1000);
+                    }
+                    catch (Exception)
+                    {
+                        // do nothing.
+                    }
+                    finally
+                    {
+                        channel.Dispose();
                     }
                 }
             }

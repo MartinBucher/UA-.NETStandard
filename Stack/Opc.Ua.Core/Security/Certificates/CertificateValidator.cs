@@ -254,7 +254,6 @@ namespace Opc.Ua
                 {
                     case StatusCodes.BadCertificateHostNameInvalid:
                     case StatusCodes.BadCertificateIssuerRevocationUnknown:
-                    case StatusCodes.BadCertificateChainIncomplete:
                     case StatusCodes.BadCertificateIssuerTimeInvalid:
                     case StatusCodes.BadCertificateIssuerUseNotAllowed:
                     case StatusCodes.BadCertificateRevocationUnknown:
@@ -792,7 +791,7 @@ namespace Opc.Ua
                 }
             }
 
-            if (issuedByCA && (!chainStatusChecked || chainIncomplete))
+            if (!chainStatusChecked || chainIncomplete)
             {
                 throw ServiceResultException.Create(
                     StatusCodes.BadCertificateChainIncomplete,
